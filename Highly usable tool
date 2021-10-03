@@ -1,0 +1,4 @@
+select t.name, tk.amount
+from tool_ka t
+join techkart_ka tk on t.tno = tk.tno 
+where (tk.amount >= 7);
