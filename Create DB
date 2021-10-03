@@ -1,0 +1,85 @@
+create table zakazchiki_ka
+(zno integer not null,
+fname varchar2(15) not null,
+lname varchar2(15) not null, 
+address varchar2(20) not null,
+primary key(zno));
+ 
+create table orders_ka
+(ono integer not null,
+zno integer not null, 
+name varchar2(30) not null,
+dzak date not null,
+dvip date,
+price number(8,2), 
+primary key(ono),
+constraint o_zno foreign key (zno) references zakazchiki_ka);
+
+create table staff_ka
+(sno integer not null, 
+fname varchar2(15) not null,
+lname varchar2(15) not null,
+address varchar2(20) not null,
+tel_no varchar2(13) not null,
+unique (tel_no),
+salary number(8,2) not null,
+age integer check(age >= 22),
+primary key(sno));
+
+create table postavchiki_ka
+(pno integer not null,
+fname varchar2(15) not null,
+lname varchar2(15) not null,
+address varchar2(20) not null,
+tel_no varchar2(12) not null,
+unique (tel_no),
+primary key(pno));
+
+create table tool_ka
+(tno integer not null,
+name varchar2(30) not null,
+amount integer not null,
+dpost date not null,
+pno integer not null,
+expired integer not null,
+primary key(tno),
+constraint t_pno foreign key (pno) references postavchiki_ka);
+
+create table techkart_ka
+(tkno integer not null,
+ono integer not null,
+sno integer not null,
+tno integer not null,
+amount integer not null,
+primary key(tkno,ono,sno),
+constraint tk_ono foreign key (ono) references orders_ka,
+constraint tk_sno foreign key (sno) references staff_ka,
+constraint tk_tno foreign key (tno) references tool_ka);
+
+insert into zakazchiki_ka values (1,'Pavlov','Daniil','Gomel');
+insert into zakazchiki_ka values (2,'Hohlov','Volodya','Gomel');
+insert into zakazchiki_ka values (3,'Vench','Dizel','Minsk');
+
+insert into orders_ka values (1,1,'Plita',TO_DATE('19/07/2018', 'DD/MM/YYYY'),TO_DATE('12/08/2018', 'DD/MM/YYYY'),'155.25');
+insert into orders_ka values (2,2,'Gazovoe oborudovan',TO_DATE('20/07/2018', 'DD/MM/YYYY'),TO_DATE('20/08/2018', 'DD/MM/YYYY'),'250');
+insert into orders_ka values (3,3,'Utyug',TO_DATE('26/07/2018', 'DD/MM/YYYY'),TO_DATE('02/08/2018', 'DD/MM/YYYY'),'98.36');
+
+insert into staff_ka values (1,'Radkov','Yriy','Minsk','+37529123456','570','22'); 
+insert into staff_ka values (2,'Milashevich','Daria','Minsk','+37544723456','570','24'); 
+insert into staff_ka values (3,'Varvanskaya','Mariya','Minsk','+37525563456','570','42'); 
+
+insert into postavchiki_ka values (1,'Grushev','George','Germany','+10495034785');
+insert into postavchiki_ka values (2,'Langrehr','Birte','Germany','+10497854785');
+insert into postavchiki_ka values (3,'Laube','Ingrid','Germany','+10495039885');
+
+insert into tool_ka values (1,'Molotok','5',TO_DATE('10/07/2016', 'DD/MM/YYYY'),1,39);
+insert into tool_ka values (2,'Gvozd','150',TO_DATE('10/07/2016', 'DD/MM/YYYY'),1,16);
+insert into tool_ka values (3,'Izolenta','17',TO_DATE('19/01/2018', 'DD/MM/YYYY'),2,10);
+
+
+insert into techkart_ka values (1,1,1,1,1);
+insert into techkart_ka values (2,1,2,2,10);
+insert into techkart_ka values (3,1,3,3,4);
+insert into techkart_ka values (4,2,1,2,15);
+insert into techkart_ka values (5,2,2,3,1);
+insert into techkart_ka values (6,3,3,1,7);
